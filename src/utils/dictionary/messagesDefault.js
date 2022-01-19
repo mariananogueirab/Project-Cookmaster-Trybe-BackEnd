@@ -5,4 +5,5 @@ module.exports = {
   allFields: 'All fields must be filled',
   jwtMalformed: 'jwt malformed',
   recipeNotFound: 'recipe not found',
+  missingAuth: 'missing auth token',
 };

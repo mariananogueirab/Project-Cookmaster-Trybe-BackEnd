@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { create, getAllRecipes, getRecipeById } = require('../models/recipes.model');
+const { create, getAllRecipes, getRecipeById, update } = require('../models/recipes.model');
 const errorHandling = require('../utils/functions/errorHandling');
 const { badRequest, notFound } = require('../utils/dictionary/statusCode');
 const { invalidEntry, recipeNotFound } = require('../utils/dictionary/messagesDefault');
@@ -13,6 +13,14 @@ const recipesSchema = Joi.object({
 const idSchema = Joi.object({
   id: Joi.string().length(24).required(),
 });
+
+const validateRecipeId = (id) => {
+  const { error } = idSchema.validate({
+    id,
+  });
+
+  if (error) throw errorHandling(notFound, recipeNotFound);
+};
 
 const createRecipe = async (name, ingredients, preparation, userId) => {
   const { error } = recipesSchema.validate({
@@ -32,14 +40,18 @@ const findAllRecipes = async () => {
 };
 
 const findRecipeById = async (id) => {
-  const { error } = idSchema.validate({
-    id,
-  });
-
-  if (error) throw errorHandling(notFound, recipeNotFound);
+  validateRecipeId(id);
   const recipe = await getRecipeById(id);
 
   if (!recipe) throw errorHandling(notFound, recipeNotFound);
+  return recipe;
+};
+
+const updateRecipe = async (id, name, ingredients, preparation) => {
+  validateRecipeId(id);
+  const recipe = await update(id, name, ingredients, preparation);
+  if (!recipe) throw errorHandling(notFound, recipeNotFound);
+
   return recipe;
 };
 
@@ -47,4 +59,5 @@ module.exports = {
   createRecipe,
   findAllRecipes,
   findRecipeById,
+  updateRecipe,
 };

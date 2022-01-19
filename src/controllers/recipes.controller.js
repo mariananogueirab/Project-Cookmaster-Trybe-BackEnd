@@ -1,4 +1,9 @@
-const { createRecipe, findAllRecipes, findRecipeById } = require('../services/recipe.service');
+const {
+  createRecipe,
+  findAllRecipes,
+  findRecipeById,
+  updateRecipe,
+} = require('../services/recipe.service');
 const { created, success } = require('../utils/dictionary/statusCode');
 
 const recipeCreate = async (req, res, _next) => {
@@ -33,8 +38,22 @@ const getRecipe = async (req, res) => {
   }
 };
 
+const recipeUpdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, ingredients, preparation } = req.body;
+    /* const { userId } = req.user; */
+    const recipe = await updateRecipe(id, name, ingredients, preparation);
+
+    return res.status(success).json(recipe);
+  } catch (error) {
+    return res.status(error.status).json({ message: error.message });
+  }
+};
+
 module.exports = {
   recipeCreate,
   getRecipes,
   getRecipe,
+  recipeUpdate,
 };
