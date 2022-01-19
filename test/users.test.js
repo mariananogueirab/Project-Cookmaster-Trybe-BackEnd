@@ -5,7 +5,7 @@ require('dotenv').config();
 const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/Cookmaster`;
 const url = 'http://localhost:3000';
 
-describe('1 - Crie um endpoint para o cadastro de usuários', () => {
+describe.only('1 - Crie um endpoint para o cadastro de usuários', () => {
   let connection;
   let db;
 
