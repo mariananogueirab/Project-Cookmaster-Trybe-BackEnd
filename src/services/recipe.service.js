@@ -1,5 +1,11 @@
 const Joi = require('joi');
-const { create, getAllRecipes, getRecipeById, update } = require('../models/recipes.model');
+const {
+  create,
+  getAllRecipes,
+  getRecipeById,
+  update,
+  deleteRecipe,
+} = require('../models/recipes.model');
 const errorHandling = require('../utils/functions/errorHandling');
 const { badRequest, notFound } = require('../utils/dictionary/statusCode');
 const { invalidEntry, recipeNotFound } = require('../utils/dictionary/messagesDefault');
@@ -55,9 +61,17 @@ const updateRecipe = async (id, name, ingredients, preparation) => {
   return recipe;
 };
 
+const recipeDelete = async (id) => {
+  validateRecipeId(id);
+  const recipe = await deleteRecipe(id);
+  if (!recipe) throw errorHandling(notFound, recipeNotFound);
+  return recipe;
+};
+
 module.exports = {
   createRecipe,
   findAllRecipes,
   findRecipeById,
   updateRecipe,
+  recipeDelete,
 };
