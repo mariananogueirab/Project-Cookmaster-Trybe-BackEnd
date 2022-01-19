@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { create } = require('../models/recipes.model');
+const { create, getAllRecipes } = require('../models/recipes.model');
 const errorHandling = require('../utils/functions/errorHandling');
 const { badRequest } = require('../utils/dictionary/statusCode');
 const { invalidEntry } = require('../utils/dictionary/messagesDefault');
@@ -22,6 +22,12 @@ const createRecipe = async (name, ingredients, preparation) => {
   return id;
 };
 
+const findAllRecipes = async () => {
+  const recipes = await getAllRecipes();
+  return recipes;
+};
+
 module.exports = {
   createRecipe,
+  findAllRecipes,
 };
