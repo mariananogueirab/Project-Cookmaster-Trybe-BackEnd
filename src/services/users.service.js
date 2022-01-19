@@ -1,13 +1,14 @@
 const Joi = require('joi');
-const { create, findUserByEmail } = require('../models/users.model');
+const { create, findUserByEmail, createAdminUser } = require('../models/users.model');
 const errorHandling = require('../utils/functions/errorHandling');
 const {
   invalidEntry,
   emailAlreadyRegistered,
   incorrectData,
   allFields,
+  onlyAdmins,
 } = require('../utils/dictionary/messagesDefault');
-const { badRequest, conflict, unauthorized } = require('../utils/dictionary/statusCode');
+const { badRequest, conflict, unauthorized, forbiden } = require('../utils/dictionary/statusCode');
 const { generateToken } = require('./authService');
 
 const userSchema = Joi.object({
@@ -17,13 +18,17 @@ const userSchema = Joi.object({
   password: Joi.required(),
 });
 
-const createUser = async (name, email, password) => {
+const validateUser = (name, email, password) => {
   const { error } = userSchema.validate({
     name,
     email,
     password,
   });
   if (error) throw errorHandling(badRequest, invalidEntry);
+};
+
+const createUser = async (name, email, password) => {
+  validateUser(name, email, password);
 
   const emailAlreadyExists = await findUserByEmail(email);
 
@@ -47,7 +52,16 @@ const findUser = async (email, password) => {
   return token;
 };
 
+const adminUserCreate = async (name, email, password, role) => {
+  validateUser(name, email, password);
+  if (role !== 'admin') throw errorHandling(forbiden, onlyAdmins);
+
+  const id = await createAdminUser(name, email, password);
+  return id;
+};
+
 module.exports = {
   createUser,
   findUser,
+  adminUserCreate,
 };

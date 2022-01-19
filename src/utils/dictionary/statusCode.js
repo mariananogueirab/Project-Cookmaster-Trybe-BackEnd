@@ -8,4 +8,5 @@ module.exports = {
   conflict: 409,
   unauthorized: 401,
   noContent: 204,
+  forbiden: 403,
 };

@@ -1,4 +1,4 @@
-const { createUser } = require('../services/users.service');
+const { createUser, adminUserCreate } = require('../services/users.service');
 const { created } = require('../utils/dictionary/statusCode');
 
 const userCreate = async (req, res, _next) => {
@@ -18,6 +18,25 @@ const userCreate = async (req, res, _next) => {
   }
 };
 
+const admin = async (req, res) => {
+  const { name, email, password } = req.body;
+  const { role } = req.user;
+  try {
+    const id = await adminUserCreate(name, email, password, role);
+    const newUser = {
+      name,
+      email,
+      role: 'admin',
+      _id: id,
+    };
+
+    return res.status(created).json({ user: newUser });
+  } catch (error) {
+    return res.status(error.status).json({ message: error.message });
+  }
+};
+
 module.exports = {
   userCreate,
+  admin,
 };
