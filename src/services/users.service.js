@@ -1,6 +1,8 @@
 const Joi = require('joi');
-const { create } = require('../models/users.model');
-const { invalidEntry } = require('../utils/dictionary/messagesDefault');
+const { create, findUserByEmail } = require('../models/users.model');
+const errorHandling = require('../utils/functions/errorHandling');
+const { invalidEntry, emailAlreadyRegistered } = require('../utils/dictionary/messagesDefault');
+const { badRequest, conflict } = require('../utils/dictionary/statusCode');
 
 const userSchema = Joi.object({
   name: Joi.string().required(),
@@ -15,7 +17,11 @@ const createUser = async (name, email, password) => {
     email,
     password,
   });
-  if (error) throw invalidEntry;
+  if (error) throw errorHandling(badRequest, invalidEntry);
+
+  const emailAlreadyExists = await findUserByEmail(email);
+
+  if (emailAlreadyExists) throw errorHandling(conflict, emailAlreadyRegistered);
 
   const id = await create(name, email, password);
   return id;

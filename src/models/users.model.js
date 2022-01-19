@@ -9,6 +9,13 @@ const create = async (name, email, password) => {
   return insertedId;
 };
 
+const findUserByEmail = async (email) => {
+  const db = await connect();
+  const emailExists = await db.collection(DB_COLLECTION).findOne({ email });
+  return emailExists;
+};
+
 module.exports = {
   create,
+  findUserByEmail,
 };

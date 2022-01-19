@@ -1,5 +1,5 @@
 const { createUser } = require('../services/users.service');
-const { badRequest, created } = require('../utils/dictionary/statusCode');
+const { created } = require('../utils/dictionary/statusCode');
 
 const userCreate = async (req, res, _next) => {
   const { name, email, password } = req.body;
@@ -14,7 +14,7 @@ const userCreate = async (req, res, _next) => {
 
     return res.status(created).json({ user: newUser });
   } catch (error) {
-    return res.status(badRequest).json({ message: error });
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
