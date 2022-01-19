@@ -2,6 +2,7 @@ const express = require('express');
 const errorMiddleware = require('../middlewares/errorMiddleware');
 const { userCreate } = require('../controllers/users.controller');
 const { login } = require('../controllers/login.controller');
+const recipes = require('../routes/recipes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get('/', (request, response) => {
 
 app.post('/users', userCreate);
 app.post('/login', login);
+app.use('/recipes', recipes);
 app.use(errorMiddleware);
 
 module.exports = app;

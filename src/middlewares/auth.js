@@ -1,0 +1,17 @@
+const { verifyToken } = require('../services/authService');
+const { jwtMalformed } = require('../utils/dictionary/messagesDefault');
+const { unauthorized } = require('../utils/dictionary/statusCode');
+
+module.exports = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+    const user = verifyToken(authorization);
+
+    if (!authorization || !user) return res.status(unauthorized).json({ message: jwtMalformed });
+    req.user = user;
+    next();
+  } catch (error) {
+    console.log('FALHA AUTH');
+    return res.status(error.status).json({ message: error.message });
+  }
+};
