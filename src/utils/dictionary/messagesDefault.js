@@ -4,4 +4,5 @@ module.exports = {
   incorrectData: 'Incorrect username or password',
   allFields: 'All fields must be filled',
   jwtMalformed: 'jwt malformed',
+  recipeNotFound: 'recipe not found',
 };
