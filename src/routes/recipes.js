@@ -1,5 +1,4 @@
 const express = require('express');
-const multer = require('multer');
 const {
   recipeCreate,
   getRecipes,
@@ -9,7 +8,7 @@ const {
   createUrlImage,
 } = require('../controllers/recipes.controller');
 const auth = require('../middlewares/auth');
-const multerConfig = require('../config/multer');
+const upload = require('../config/multer');
 
 const router = express.Router();
 
@@ -18,6 +17,6 @@ router.get('/', getRecipes);
 router.get('/:id', getRecipe);
 router.put('/:id', auth, recipeUpdate);
 router.delete('/:id', auth, findDeletedRecipe);
-router.post('/:id/image', auth, multer({ multerConfig }).single('image'), createUrlImage); // vem um controller ainda
+router.put('/:id/image', auth, upload.single('image'), createUrlImage); // vem um controller ainda
 
 module.exports = router;
