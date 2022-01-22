@@ -5,6 +5,7 @@ const {
   getRecipeById,
   update,
   deleteRecipe,
+  urlImageCreate,
 } = require('../models/recipes.model');
 const errorHandling = require('../utils/functions/errorHandling');
 const { badRequest, notFound } = require('../utils/dictionary/statusCode');
@@ -68,10 +69,18 @@ const recipeDelete = async (id) => {
   return recipe;
 };
 
+const urlImage = async (id, image) => {
+  const recipe = await urlImageCreate(id, image);
+  if (!recipe) throw errorHandling(notFound, recipeNotFound);
+  console.log('service image: ', image);
+  return recipe;
+};
+
 module.exports = {
   createRecipe,
   findAllRecipes,
   findRecipeById,
   updateRecipe,
   recipeDelete,
+  urlImage,
 };

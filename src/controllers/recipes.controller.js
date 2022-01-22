@@ -4,6 +4,7 @@ const {
   findRecipeById,
   updateRecipe,
   recipeDelete,
+  urlImage,
 } = require('../services/recipe.service');
 const { created, success, noContent } = require('../utils/dictionary/statusCode');
 
@@ -63,10 +64,24 @@ const findDeletedRecipe = async (req, res) => {
   }
 };
 
+const createUrlImage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const image = `localhost:3000/src/uploads/${id}.jpeg`;
+    const recipe = await urlImage(id, image);
+    console.log('controller recipe: ', recipe);
+
+    return res.status(success).json(recipe);
+  } catch (error) {
+    return res.status(error.status).json({ message: error.message });
+  }
+};
+
 module.exports = {
   recipeCreate,
   getRecipes,
   getRecipe,
   recipeUpdate,
   findDeletedRecipe,
+  createUrlImage,
 };
