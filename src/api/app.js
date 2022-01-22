@@ -15,7 +15,7 @@ app.get('/', (request, response) => {
 });
 // Não remover esse end-point, ele é necessário para o avaliador
 
-app.use('images', express.static(path.join(__dirname, '..', '/uploads'))); // sempre que receber uma request, o express vai primeiro verificar se o caminho da request é o nome de um arquivo que existe em `uploads`. Se for, o express envia o conteúdo desse arquivo e encerra a response.
+app.use('/images', express.static(path.join(__dirname, '..', '/uploads'))); // sempre que receber uma request, o express vai primeiro verificar se o caminho da request é o nome de um arquivo que existe em `uploads`. Se for, o express envia o conteúdo desse arquivo e encerra a response.
 
 app.use('/users', users);
 app.post('/login', login);
