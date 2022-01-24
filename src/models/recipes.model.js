@@ -49,7 +49,6 @@ const urlImageCreate = async (id, image) => {
   await db.collection(DB_COLLECTION)
     .updateOne({ _id: ObjectId(id) }, { $set: { image } });
     const recipe = await getRecipeById(id);
-    console.log('model image: ', image);
     return recipe;
 };
 

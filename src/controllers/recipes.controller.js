@@ -44,7 +44,6 @@ const recipeUpdate = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, ingredients, preparation } = req.body;
-    /* const { userId } = req.user; */
     const recipe = await updateRecipe(id, name, ingredients, preparation);
 
     return res.status(success).json(recipe);
@@ -69,7 +68,6 @@ const createUrlImage = async (req, res) => {
     const { id } = req.params;
     const image = `localhost:3000/src/uploads/${id}.jpeg`;
     const recipe = await urlImage(id, image);
-    console.log('controller recipe: ', recipe);
 
     return res.status(success).json(recipe);
   } catch (error) {

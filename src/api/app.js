@@ -8,6 +8,7 @@ const recipes = require('../routes/recipes');
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {

@@ -72,7 +72,6 @@ const recipeDelete = async (id) => {
 const urlImage = async (id, image) => {
   const recipe = await urlImageCreate(id, image);
   if (!recipe) throw errorHandling(notFound, recipeNotFound);
-  console.log('service image: ', image);
   return recipe;
 };
 
